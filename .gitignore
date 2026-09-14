@@ -1,0 +1,62 @@
+# ============================================================
+#  SECRETOS  -- lo más importante de este archivo
+#  Nunca, jamás, commitear una API key.
+# ============================================================
+.env
+.env.*
+!.env.example
+*.key
+secrets/
+
+# ============================================================
+#  Material del curso (PPTs de Coderhouse, PDFs)
+#  Es material propietario: no va a un repo público.
+# ============================================================
+Docu/
+
+# ============================================================
+#  Python
+# ============================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+ENV/
+
+# Testing / cobertura
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# ============================================================
+#  Notebooks
+# ============================================================
+.ipynb_checkpoints/
+
+# ============================================================
+#  Vector DBs locales (van a aparecer en el Módulo 3)
+# ============================================================
+chroma_db/
+*.sqlite3
+
+# ============================================================
+#  Editores / SO
+# ============================================================
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store

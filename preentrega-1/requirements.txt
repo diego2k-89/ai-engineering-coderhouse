@@ -1,0 +1,8 @@
+# --- SDKs de proveedores ---
+openai>=1.55.0
+anthropic>=0.40.0
+google-genai>=0.3.0
+
+# --- Validación y configuración ---
+pydantic>=2.9.0
+python-dotenv>=1.0.1
