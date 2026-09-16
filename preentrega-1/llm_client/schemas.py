@@ -55,6 +55,7 @@ class LLMConfig(BaseModel):
     api_key: SecretStr
     temperature: float = Field(default=0.7, ge=0.0, le=2.0)
     max_tokens: int = Field(default=512, gt=0, le=8192)
+    timeout_seconds: float = Field(default=30.0, gt=0)
 
 
 class ModelResponse(BaseModel):
@@ -68,6 +69,12 @@ class ModelResponse(BaseModel):
     model: str
     content: str = ""
     error: str | None = None
+    retryable: bool = False
+    """True si tiene sentido reintentar: rate limit, caída de red, timeout.
+
+    False para fallos que no mejoran esperando, como una API key inválida.
+    Reintentar un 401 tres veces con backoff es perder segundos para nada.
+    """
 
     @property
     def ok(self) -> bool:
