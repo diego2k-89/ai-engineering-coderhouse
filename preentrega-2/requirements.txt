@@ -1,0 +1,11 @@
+# --- LangChain ---
+# Solo langchain-core y los conectores de cada proveedor.
+# El paquete "langchain" a secas arrastra LangGraph, que no usamos acá.
+langchain-core>=1.6.0
+langchain-openai>=1.6.0
+langchain-anthropic>=1.7.0
+langchain-google-genai>=4.4.0
+
+# --- Validación y configuración ---
+pydantic>=2.9.0
+python-dotenv>=1.0.1
