@@ -1,13 +1,13 @@
 """
 El contrato de salida del pipeline.
 
-Este archivo cumple una función distinta a la del módulo 1. Allá los esquemas
-validaban lo que NOSOTROS le mandábamos a la API. Acá validan lo que el MODELO
-nos devuelve, y además viajan hasta el modelo: LangChain convierte esta clase
-en un JSON Schema y se lo pasa al proveedor como definición de herramienta.
+En el módulo 1 los esquemas validaban la entrada que se enviaba a la API. Acá
+validan la salida que devuelve el modelo, y además viajan hasta él: LangChain
+convierte esta clase en un JSON Schema y se lo pasa al proveedor como definición
+de herramienta.
 
-Por eso los `description` de cada campo importan tanto. No son comentarios para
-quien lee el código: son parte de la instrucción que recibe el modelo.
+Por eso el `description` de cada campo es parte de la instrucción que recibe el
+modelo, y no un comentario para quien lee el código.
 """
 
 from enum import Enum
@@ -66,8 +66,8 @@ class EntidadesTecnicas(BaseModel):
     def limpiar_tecnologias(cls, valores: list[str]) -> list[str]:
         """Normaliza la lista después de que el modelo la devolvió.
 
-        Dos cosas que los LLMs hacen seguido: dejar strings vacíos o con
-        espacios sobrantes, y repetir la misma tecnología con distinta
+        Dos desvíos frecuentes en la salida de un LLM: strings vacíos o con
+        espacios sobrantes, y la misma tecnología repetida con distinta
         capitalización ("FastAPI" y "fastapi" en la misma lista).
         """
         limpias: list[str] = []

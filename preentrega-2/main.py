@@ -1,11 +1,11 @@
 """
 Script de prueba del pipeline.
 
-Corre cuatro pruebas:
+Corre tres pruebas:
   1. Extracción sobre un texto técnico, con los tres proveedores.
   2. Prueba de estrés: un texto ambiguo, sin contenido técnico.
-  3. Truncamiento forzado: max_tokens ridículamente bajo, para ver la
-     detección de respuesta incompleta y los reintentos.
+  3. Truncamiento forzado: max_tokens muy bajo, para ver la detección de
+     respuesta incompleta y los reintentos.
 
 Uso:
     python main.py
@@ -13,6 +13,7 @@ Uso:
 
 import asyncio
 import logging
+import time
 
 from chain import build_chain, process_text
 from schemas import EntidadesTecnicas
@@ -40,7 +41,8 @@ def configurar_logs() -> None:
 
     # LangChain también detecta el corte por max_tokens, pero lo reporta
     # imprimiendo un traceback completo en vez de lanzar. En la demo 3 eso
-    # aparece tres veces y tapa lo que queremos ver, que es nuestra detección.
+    # aparece tres veces y tapa la detección del pipeline, que es lo que
+    # interesa ver.
     logging.getLogger("langchain_core.output_parsers").setLevel(logging.CRITICAL)
 
 
@@ -79,8 +81,8 @@ async def demo_texto_ambiguo() -> None:
         print("El modelo produjo una salida válida:")
         mostrar(resultado)
         print(
-            "\nOjo: revisar si las tecnologías salen del texto o si el modelo\n"
-            "las completó para cumplir con el esquema."
+            "\nQueda por verificar si las tecnologías salen del texto o si el\n"
+            "modelo las completó para cumplir con el esquema."
         )
     except Exception as e:
         print(f"Rechazado tras los reintentos: {type(e).__name__}")
@@ -91,24 +93,36 @@ async def demo_texto_ambiguo() -> None:
 async def demo_truncamiento() -> None:
     titulo("3. Truncamiento forzado (finish_reason)")
     print(
-        "Armamos la cadena con max_tokens=25: el modelo no llega a completar\n"
-        "la respuesta. Sin detección, un JSON cortado puede seguir siendo\n"
-        "válido y pasar como bueno.\n"
+        "Cadena armada con max_tokens=25: el modelo no llega a completar la\n"
+        "respuesta. Sin detección, un JSON cortado puede seguir siendo válido\n"
+        "y pasar como bueno.\n"
     )
 
     cadena = build_chain(max_tokens=25)
 
+    # Esta demo invoca la cadena directamente y no pasa por process_text(), que
+    # es donde vive la medición. Así que el tiempo se mide acá, para que el
+    # escenario de falla también quede cronometrado.
+    inicio = time.perf_counter()
+
     try:
         resultado = await cadena.ainvoke({"texto": TEXTO_TECNICO})
-        print("Inesperado: el modelo entró en 25 tokens.")
+        print(
+            "Inesperado: el modelo entró en 25 tokens "
+            f"({time.perf_counter() - inicio:.2f}s)."
+        )
         mostrar(resultado)
     except Exception as e:
-        print(f"\nDetectado y rechazado: {type(e).__name__}")
+        print(
+            f"\nDetectado y rechazado en {time.perf_counter() - inicio:.2f}s: "
+            f"{type(e).__name__}"
+        )
         print(f"{str(e)[:300]}")
         print(
             "\nLos reintentos de arriba son .with_retry() haciendo su trabajo.\n"
             "Con el presupuesto de tokens fijo, los tres fallan igual: el\n"
-            "problema no es pasajero."
+            "problema no es pasajero. Ese tiempo es casi todo espera entre\n"
+            "reintentos, no trabajo del modelo."
         )
 
 

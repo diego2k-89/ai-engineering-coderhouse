@@ -5,11 +5,12 @@ La cadena LCEL del pipeline.
 
 Los tres pasos se componen con el operador `|`. Cada uno es un Runnable, así
 que la cadena entera también lo es: se puede invocar, reintentar y ejecutar de
-forma asíncrona sin escribir código de pegamento.
+forma asíncrona sin código intermedio.
 """
 
 import logging
 import os
+import time
 
 from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
@@ -67,15 +68,14 @@ _MODELOS: dict[str, tuple[str, str]] = {
 
 
 def get_model(provider: str, max_tokens: int | None = None):
-    """Fábrica de modelos: mismo criterio que el factory del Módulo 1.
+    """Fábrica de modelos, con el mismo criterio que el factory del módulo 1.
 
-    `temperature=0` es intencional. Para extracción estructurada queremos
-    determinismo: el mismo texto debería dar el mismo resultado. La
-    creatividad acá es un defecto, no una virtud.
+    `temperature=0` es intencional: en extracción estructurada el objetivo es el
+    determinismo, que el mismo texto produzca el mismo resultado.
 
-    `max_tokens` se puede forzar desde afuera. Sirve para la demo de
-    truncamiento: con un presupuesto ridículamente bajo, el modelo corta la
-    respuesta a mitad de camino y se puede ver la detección funcionando.
+    `max_tokens` se puede forzar desde afuera. Lo usa la demo de truncamiento:
+    con un límite muy bajo, el modelo corta la respuesta a mitad de camino y
+    queda visible la detección.
     """
     provider = provider.strip().lower()
     if provider not in _MODELOS:
@@ -117,7 +117,7 @@ _MOTIVOS_DE_CORTE = {"length", "max_tokens"}
 
 
 def _fue_truncada(mensaje) -> bool:
-    """¿El modelo se quedó sin tokens a mitad de camino?"""
+    """Indica si el modelo cortó la respuesta por límite de tokens."""
     metadata = getattr(mensaje, "response_metadata", None) or {}
 
     for clave in _CLAVES_DE_CORTE:
@@ -172,7 +172,7 @@ def build_chain(provider: str | None = None, max_tokens: int | None = None):
 
     `.with_retry()` va sobre la cadena entera y no solo sobre el modelo: así
     también reintenta cuando el que falla es el paso de verificación, que es
-    justamente donde detectamos la respuesta truncada.
+    donde se detecta la respuesta truncada.
     """
     provider = provider or os.getenv("LLM_PROVIDER", "anthropic")
 
@@ -192,10 +192,20 @@ async def process_text(text: str, provider: str | None = None) -> EntidadesTecni
 
     Si tras todos los reintentos no se logra una salida válida, la excepción
     se propaga: quien llama decide qué hacer. A diferencia del Módulo 1, acá
-    no hay un objeto de error que devolver — la consigna pide que el pipeline
+    no hay un objeto de error que devolver: la consigna pide que el pipeline
     devuelva siempre un objeto validado o nada.
+
+    Los logs de cierre llevan la duración de la llamada. Se mide con
+    `time.perf_counter()` y no con `time.time()`: perf_counter es monótono, así
+    que un ajuste del reloj del sistema en medio de la llamada no puede producir
+    un elapsed negativo o inflado.
+
+    La duración es de punta a punta, e incluye los reintentos y sus esperas. Una
+    corrida que salió al primer intento y otra que reintentó tres veces no son
+    comparables, y el número lo deja ver.
     """
     provider = provider or os.getenv("LLM_PROVIDER", "anthropic")
+    inicio = time.perf_counter()
     logger.info("[%s] Procesando texto de %d caracteres", provider, len(text))
 
     cadena = build_chain(provider)
@@ -203,8 +213,13 @@ async def process_text(text: str, provider: str | None = None) -> EntidadesTecni
     try:
         resultado = await cadena.ainvoke({"texto": text})
     except Exception as e:
-        logger.error("[%s] Falló tras los reintentos: %s", provider, e)
+        logger.error(
+            "[%s] Falló tras los reintentos en %.2fs: %s",
+            provider,
+            time.perf_counter() - inicio,
+            e,
+        )
         raise
 
-    logger.info("[%s] Listo", provider)
+    logger.info("[%s] Listo en %.2fs", provider, time.perf_counter() - inicio)
     return resultado
