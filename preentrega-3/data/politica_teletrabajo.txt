@@ -1,0 +1,66 @@
+POLÍTICA DE TELETRABAJO
+Vantia Software S.A. — Recursos Humanos
+Versión 3.0 — vigente desde el 1 de febrero de 2026
+
+1. ESQUEMA GENERAL
+
+Vantia Software adopta un esquema de trabajo híbrido para todas las áreas
+cuyas funciones no requieran presencia física obligatoria. El esquema estándar
+es de 3 días de trabajo remoto y 2 días de trabajo presencial por semana.
+
+La distribución concreta de los días la define cada líder de equipo, con el
+criterio de que al menos un día presencial sea común a todo el equipo. Ese día
+común se destina a instancias de coordinación, revisión técnica y actividades
+que se benefician de la presencia simultánea.
+
+2. ÁREAS EXCLUIDAS
+
+Quedan excluidas del esquema híbrido las funciones de soporte de datacenter,
+recepción, y el personal de laboratorio de hardware, cuyas tareas requieren
+presencia física permanente. Estas áreas acceden en cambio a un esquema de
+flexibilidad horaria con banda de entrada entre las 7 y las 10 de la mañana.
+
+3. REQUISITOS TÉCNICOS
+
+El empleado debe contar con una conexión a internet estable de al menos 20
+Mbps de bajada y 5 Mbps de subida, y un espacio de trabajo con condiciones
+adecuadas de iluminación, ventilación y aislamiento acústico razonable.
+
+Vantia Software provee un subsidio mensual para conectividad y equipamiento de
+home office. El subsidio se liquida junto con el sueldo y requiere la
+presentación anual de comprobantes del servicio de internet a nombre del
+empleado o de un conviviente.
+
+El equipamiento informático (notebook, monitor adicional, periféricos) lo
+provee la empresa y sigue siendo patrimonio de Vantia Software. Su reposición
+por falla se gestiona a través de la mesa de ayuda interna, con un plazo
+objetivo de 48 horas hábiles para equipos críticos.
+
+4. DISPONIBILIDAD Y HORARIOS
+
+Durante los días de trabajo remoto se espera que el empleado esté disponible
+en el horario laboral habitual, de 9 a 18 horas, con una pausa de almuerzo de
+hasta una hora que no requiere aviso previo.
+
+La respuesta a comunicaciones internas debe darse dentro de un margen
+razonable, entendido como 2 horas hábiles para mensajes ordinarios y 30
+minutos para incidentes marcados como críticos en el canal de guardia.
+
+El incumplimiento reiterado y no justificado de la disponibilidad puede
+derivar en la revisión del esquema de teletrabajo del empleado, previa
+conversación documentada con el líder de equipo y Recursos Humanos.
+
+5. REVERSIBILIDAD
+
+Tanto el empleado como la empresa pueden solicitar la reversión al esquema
+presencial. La solicitud del empleado se concede de forma automática. La
+solicitud de la empresa requiere un preaviso de 30 días corridos y un motivo
+fundado por escrito.
+
+6. TRABAJO DESDE OTRA LOCALIDAD
+
+El trabajo remoto desde una localidad distinta a la de residencia declarada se
+permite por hasta 20 días hábiles por año calendario, con aviso previo de 5
+días al líder de equipo. Superado ese límite, o si la localidad está fuera del
+país, se requiere autorización de Recursos Humanos por implicancias
+impositivas y de cobertura de seguros.

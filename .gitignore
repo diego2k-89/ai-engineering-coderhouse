@@ -47,8 +47,10 @@ htmlcov/
 .ipynb_checkpoints/
 
 # ============================================================
-#  Vector DBs locales (van a aparecer en el Módulo 3)
+#  Vector DBs locales (Módulo 3 en adelante)
+#  El índice se reconstruye con `python ingest.py`, no se versiona.
 # ============================================================
+vectorstore/
 chroma_db/
 *.sqlite3
 

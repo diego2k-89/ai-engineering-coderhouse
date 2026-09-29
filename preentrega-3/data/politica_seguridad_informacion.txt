@@ -1,0 +1,66 @@
+POLÍTICA DE SEGURIDAD DE LA INFORMACIÓN
+Vantia Software S.A. — Seguridad Informática
+Versión 5.1 — vigente desde el 1 de abril de 2026
+
+1. CLASIFICACIÓN DE LA INFORMACIÓN
+
+Toda la información que maneja Vantia Software se clasifica en cuatro niveles:
+
+- Pública: puede difundirse sin restricción.
+- Interna: circula dentro de la empresa; no se comparte con terceros.
+- Confidencial: circula entre las personas con necesidad de conocer.
+- Restringida: datos de clientes, credenciales y código fuente de productos.
+
+El nivel por defecto ante la ausencia de clasificación explícita es Interna.
+La responsabilidad de clasificar un documento es de quien lo crea.
+
+2. CREDENCIALES Y AUTENTICACIÓN
+
+El segundo factor de autenticación es obligatorio para todos los sistemas
+corporativos, sin excepción y sin períodos de gracia.
+
+Las contraseñas deben tener un mínimo de 14 caracteres. No se exige rotación
+periódica, en línea con las recomendaciones actuales, pero sí el cambio
+inmediato ante cualquier sospecha de compromiso.
+
+Las credenciales de servicios y las claves de API nunca se escriben en el
+código fuente ni en archivos de configuración versionados. Se gestionan a
+través del gestor de secretos corporativo y se inyectan como variables de
+entorno en tiempo de ejecución.
+
+3. DISPOSITIVOS
+
+Los equipos provistos por la empresa tienen cifrado de disco completo
+habilitado de fábrica. El empleado no debe deshabilitarlo ni instalar sistemas
+operativos alternativos sin autorización de Seguridad Informática.
+
+El uso de dispositivos personales para acceder a información clasificada como
+Confidencial o Restringida está prohibido. Para información Interna se admite
+el acceso desde dispositivos personales únicamente a través del portal web
+corporativo, sin descarga local de archivos.
+
+4. REPORTE DE INCIDENTES
+
+Todo incidente de seguridad —real o sospechado— debe reportarse al canal de
+Seguridad Informática dentro de la hora de detectado. Esto incluye la pérdida
+o robo de un dispositivo, el clic accidental en un enlace sospechoso, y el
+envío de información a un destinatario equivocado.
+
+Vantia Software aplica una política explícita de no represalia: reportar un
+error propio a tiempo nunca deriva en sanción. El objetivo es que los
+incidentes se conozcan rápido, no que se oculten.
+
+5. ACCESO A DATOS DE CLIENTES
+
+El acceso a datos productivos de clientes requiere una solicitud nominal con
+motivo, alcance y duración. Los accesos se otorgan por un máximo de 7 días
+corridos y se revocan automáticamente al vencer.
+
+Toda consulta sobre datos productivos queda registrada en un log de auditoría
+inmutable, que se conserva por 24 meses.
+
+6. TERCEROS Y PROVEEDORES
+
+Antes de compartir información Confidencial o Restringida con un proveedor
+externo debe existir un acuerdo de confidencialidad firmado y vigente, y una
+evaluación de seguridad del proveedor aprobada por Seguridad Informática.
