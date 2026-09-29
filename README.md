@@ -11,8 +11,9 @@ Cada pre-entrega vive en su propia carpeta y construye sobre la anterior.
 |:---:|---|---|:---:|
 | 1 | La interfaz base: conexión y abstracción de LLMs | [`preentrega-1/`](./preentrega-1) — Cliente LLM robusto y asíncrono | ✅ Entregado |
 | 2 | Encadenamiento lógico: orquestación con LangChain | [`preentrega-2/`](./preentrega-2) — Pipeline de procesamiento validado | ✅ Entregado |
-| 3 | Persistencia de datos y vector DBs | `preentrega-3/` — Sistema de recuperación semántica local (RAG) | 🚧 En curso |
-
+| 3 | Persistencia de datos y vector DBs | [`preentrega-3/`](./preentrega-3) — Sistema de recuperación semántica local (RAG) | ✅ Entregado |
+| 4 | Escalabilidad documental: RAG avanzado y Pinecone | `preentrega-4/` — RAG escalable en la nube | 🚧 En curso |
+| 5 | Razonamiento autónomo: agentes con LangGraph | `preentrega-5/` — Agente cíclico con memoria persistente | ⏳ No empezado |
 
 ---
 
