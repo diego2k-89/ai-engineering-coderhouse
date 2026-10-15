@@ -1,0 +1,102 @@
+[
+  {
+    "demuestra": "delegación completa: investigador busca el dato, analista calcula",
+    "pregunta": "Un servicio necesita mantener 250 conexiones simultáneas con un httpx.Client creado sin parámetros. ¿Alcanza el límite de conexiones por defecto? Si no, ¿cuántas faltan y qué porcentaje del pedido cubre?",
+    "recorrido": [
+      {
+        "nodo": "supervisor",
+        "paso": 1,
+        "razon": "No hay ninguna contribución aún. El primer paso es obtener el valor del límite de conexiones por defecto de httpx.Client de la documentación oficial (criterio 1 de la rúbrica).",
+        "siguiente": "investigador",
+        "instruccion": "Buscá en la documentación oficial de httpx cuál es el límite máximo de conexiones simultáneas (pool size o connection limit) que usa httpx.Client cuando se instancia sin parámetros. Reportá el valor exacto y el archivo o sección de la documentación donde lo encontraste."
+      },
+      {
+        "nodo": "investigador",
+        "paso": 1,
+        "agente": "investigador",
+        "instruccion": "Buscá en la documentación oficial de httpx cuál es el límite máximo de conexiones simultáneas (pool size o connection limit) que usa httpx.Client cuando se instancia sin parámetros. Reportá el valor exacto y el archivo o sección de la documentación donde lo encontraste.",
+        "herramientas": [
+          "buscar_documentacion",
+          "buscar_documentacion"
+        ],
+        "resultado": "El dato fue encontrado de forma clara y consistente en ambas búsquedas. Acá está el resultado:\n\n---\n\n## Límite máximo de conexiones simultáneas en `httpx.Client()` (sin parámetros)\n\nEl valor por defecto de **`max_connections`** es **`100`**.\n\nEste parámetro forma parte de `httpx.Limits`, que es la clase que controla el tamaño del connection pool. Cuando se instancia `httpx.Client()` sin parámetros, se aplican los siguientes valores por defecto:\n\n| Parámetro | Valor por defecto | Descripción |\n|---|---|---|\n| `max_connections` | **100** | Número máximo de conexiones simultáneas permitidas |\n| `max_keepalive_connections` | 20 | Número máximo de conexiones keep-alive permitidas |\n| `keepalive_expiry` | 5 segundos | Tiempo límite de inactividad para conexiones keep-alive |\n\n### Cita textual de la documentación:\n> *\"`max_connections`, maximum number of allowable connections, or `None` for no limits. (Default 100)\"*\n\n### Fuente:\n📄 **`advanced/resource-limits.md`**, sección **\"Resource limits\"**"
+      },
+      {
+        "nodo": "supervisor",
+        "paso": 2,
+        "razon": "El investigador reportó el dato clave (max_connections = 100, fuente: advanced/resource-limits.md). Ahora el analista debe comparar ese valor con 250, calcular si alcanza, cuántas faltan y qué porcentaje cubre.",
+        "siguiente": "analista",
+        "instruccion": "Con los siguientes datos reportados por el investigador (fuente: advanced/resource-limits.md de httpx):\n- Límite máximo de conexiones simultáneas por defecto de httpx.Client: 100 (max_connections)\n- Conexiones simultáneas requeridas por el servicio: 250\n\nRealizá los siguientes cálculos:\n1. ¿El límite por defecto (100) alcanza para cubrir 250 conexiones simultáneas? (sí/no)\n2. Si no alcanza, ¿cuántas conexiones faltan? (250 - 100)\n3. ¿Qué porcentaje del pedido (250) cubre el límite por defecto? (100 / 250 * 100, con dos decimales)"
+      },
+      {
+        "nodo": "analista",
+        "paso": 2,
+        "agente": "analista",
+        "instruccion": "Con los siguientes datos reportados por el investigador (fuente: advanced/resource-limits.md de httpx):\n- Límite máximo de conexiones simultáneas por defecto de httpx.Client: 100 (max_connections)\n- Conexiones simultáneas requeridas por el servicio: 250\n\nRealizá los siguientes cálculos:\n1. ¿El límite por defecto (100) alcanza para cubrir 250 conexiones simultáneas? (sí/no)\n2. Si no alcanza, ¿cuántas conexiones faltan? (250 - 100)\n3. ¿Qué porcentaje del pedido (250) cubre el límite por defecto? (100 / 250 * 100, con dos decimales)",
+        "herramientas": [
+          "comparar_con_limite",
+          "calcular",
+          "calcular"
+        ],
+        "resultado": "---\n\n## Resultados del análisis\n\n### 1. ¿El límite por defecto (100) alcanza para cubrir 250 conexiones?\n**No.** El valor de `max_connections = 100` **no supera** el requerimiento de 250 conexiones simultáneas.\n\n### 2. ¿Cuántas conexiones faltan?\n**Faltan 150 conexiones.**\n> Cuenta: `250 - 100 = 150`\n\n### 3. ¿Qué porcentaje del pedido cubre el límite por defecto?\n**El límite por defecto cubre el 40,00% del requerimiento.**\n> Cuenta: `100 / 250 * 100 = 40.00%`\n\n---\n\n### Conclusión\nEl límite por defecto de `httpx.Client()` cubre **menos de la mitad** del volumen requerido. Para soportar 250 conexiones simultáneas, sería necesario instanciar el cliente con `httpx.Limits(max_connections=250)` (o un valor superior), ya que el default de 100 genera un déficit de 150 conexiones."
+      },
+      {
+        "nodo": "supervisor",
+        "paso": 3,
+        "razon": "Los tres criterios de la rúbrica se cumplen: (1) el investigador reportó el valor de max_connections=100 con fuente en advanced/resource-limits.md, (2) el analista realizó todas las cuentas pedidas (comparación, diferencia y porcentaje), y (3) las contribuciones son consistentes entre sí y responden completamente la pregunta.",
+        "siguiente": "FINALIZAR",
+        "instruccion": ""
+      },
+      {
+        "nodo": "sintesis",
+        "respuesta": "## Respuesta\n\n**No alcanza.** El límite por defecto de `httpx.Client()` es **`max_connections = 100`** (fuente: `advanced/resource-limits.md`, sección \"Resource limits\").\n\n| Concepto | Valor |\n|---|---|\n| Conexiones requeridas | 250 |\n| Límite por defecto | 100 |\n| **Conexiones faltantes** | **150** (250 − 100) |\n| **Porcentaje cubierto** | **40,00%** (100 / 250 × 100) |\n\nEl límite por defecto cubre menos de la mitad del requerimiento. Para soportar 250 conexiones simultáneas habría que instanciar el cliente con `httpx.Limits(max_connections=250)` o un valor superior."
+      }
+    ],
+    "respuesta": "## Respuesta\n\n**No alcanza.** El límite por defecto de `httpx.Client()` es **`max_connections = 100`** (fuente: `advanced/resource-limits.md`, sección \"Resource limits\").\n\n| Concepto | Valor |\n|---|---|\n| Conexiones requeridas | 250 |\n| Límite por defecto | 100 |\n| **Conexiones faltantes** | **150** (250 − 100) |\n| **Porcentaje cubierto** | **40,00%** (100 / 250 × 100) |\n\nEl límite por defecto cubre menos de la mitad del requerimiento. Para soportar 250 conexiones simultáneas habría que instanciar el cliente con `httpx.Limits(max_connections=250)` o un valor superior.",
+    "agentes_usados": [
+      "investigador",
+      "analista"
+    ],
+    "segundos": 38.94
+  },
+  {
+    "demuestra": "solo investigación: el supervisor no deriva al analista",
+    "pregunta": "¿Qué excepción lanza httpx cuando no consigue una conexión del pool a tiempo?",
+    "recorrido": [
+      {
+        "nodo": "supervisor",
+        "paso": 1,
+        "razon": "No hay ninguna contribución aún. La pregunta requiere un dato concreto de la documentación de httpx (qué excepción se lanza cuando no se obtiene una conexión del pool a tiempo), lo cual es tarea del investigador.",
+        "siguiente": "investigador",
+        "instruccion": "Busca en la documentación oficial de httpx qué excepción se lanza cuando no se puede obtener una conexión del pool de conexiones a tiempo (timeout esperando una conexión disponible del pool). Indicá el nombre exacto de la excepción y el archivo o sección de la documentación donde aparece."
+      },
+      {
+        "nodo": "investigador",
+        "paso": 1,
+        "agente": "investigador",
+        "instruccion": "Busca en la documentación oficial de httpx qué excepción se lanza cuando no se puede obtener una conexión del pool de conexiones a tiempo (timeout esperando una conexión disponible del pool). Indicá el nombre exacto de la excepción y el archivo o sección de la documentación donde aparece.",
+        "herramientas": [
+          "buscar_documentacion",
+          "buscar_documentacion"
+        ],
+        "resultado": "La documentación es clara y consistente en ambas búsquedas. Aquí está el resultado:\n\n---\n\n## Excepción: `PoolTimeout`\n\nCuando httpx **no puede obtener una conexión del pool de conexiones dentro del tiempo límite configurado**, lanza la excepción:\n\n### `PoolTimeout`\n\nLa documentación lo describe textualmente así (traducción):\n\n> *\"The **pool** timeout specifies the maximum duration to wait for acquiring a connection from the connection pool. If HTTPX is unable to acquire a connection within this time frame, a `PoolTimeout` exception is raised.\"*\n\n---\n\n### 📄 Fuente\n- **Archivo:** `advanced/timeouts.md`\n- **Sección:** `Fine tuning the configuration`\n\n---\n\n### Contexto adicional relevante\n- Esta excepción está relacionada con el parámetro `limits` del cliente, que controla el tamaño máximo del pool de conexiones (`max_connections`, por defecto **100**), configurado mediante `httpx.Limits`.\n- El timeout del pool se configura a través de `httpx.Timeout`, por ejemplo:\n  ```python\n  timeout = httpx.Timeout(10.0, pool=5.0)\n  client = httpx.Client(timeout=timeout)\n  ```"
+      },
+      {
+        "nodo": "supervisor",
+        "paso": 2,
+        "razon": "El investigador reportó el dato exacto requerido (excepción `PoolTimeout`) con su fuente (`advanced/timeouts.md`). No hay cuentas ni comparaciones que hacer. Los tres criterios de la rúbrica están cumplidos.",
+        "siguiente": "FINALIZAR",
+        "instruccion": ""
+      },
+      {
+        "nodo": "sintesis",
+        "respuesta": "Cuando httpx no consigue una conexión del pool a tiempo, lanza **`PoolTimeout`**.\n\nFuente: `advanced/timeouts.md`, sección *Fine tuning the configuration*."
+      }
+    ],
+    "respuesta": "Cuando httpx no consigue una conexión del pool a tiempo, lanza **`PoolTimeout`**.\n\nFuente: `advanced/timeouts.md`, sección *Fine tuning the configuration*.",
+    "agentes_usados": [
+      "investigador"
+    ],
+    "segundos": 18.78
+  }
+]

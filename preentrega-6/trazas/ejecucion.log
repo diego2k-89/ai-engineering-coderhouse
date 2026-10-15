@@ -1,0 +1,66 @@
+
+========================================================================
+  delegación completa: investigador busca el dato, analista calcula
+========================================================================
+
+Usuario: "Un servicio necesita mantener 250 conexiones simultáneas con un httpx.Client creado sin parámetros. ¿Alcanza el límite de conexiones por defecto? Si no, ¿cuántas faltan y qué porcentaje del pedido cubre?"
+
+[supervisor 1] → investigador
+   razón: No hay ninguna contribución aún. El primer paso es obtener el valor del límite de conexiones por defecto de httpx.Client de la documentación oficial (criterio 1 de la rúbrica).
+   instrucción: Buscá en la documentación oficial de httpx cuál es el límite máximo de conexiones simultáneas (pool size o connection limit) que usa httpx.Client cuando se instancia sin parámetros. Reportá el valor exacto y el archivo o sección de la documentación donde lo encontraste.
+[investigador] herramientas: buscar_documentacion, buscar_documentacion
+   resultado: El dato fue encontrado de forma clara y consistente en ambas búsquedas. Acá está el resultado: --- ## Límite máximo de conexiones simultáneas en `httpx.Client()` (sin parámetros) El valor por defecto de **`max_connections`** es **`100`**. Este parámetro forma parte de `httpx.Limits`, que es la clase...
+
+[supervisor 2] → analista
+   razón: El investigador reportó el dato clave (max_connections = 100, fuente: advanced/resource-limits.md). Ahora el analista debe comparar ese valor con 250, calcular si alcanza, cuántas faltan y qué porcentaje cubre.
+   instrucción: Con los siguientes datos reportados por el investigador (fuente: advanced/resource-limits.md de httpx):
+- Límite máximo de conexiones simultáneas por defecto de httpx.Client: 100 (max_connections)
+- Conexiones simultáneas requeridas por el servicio: 250
+
+Realizá los siguientes cálculos:
+1. ¿El límite por defecto (100) alcanza para cubrir 250 conexiones simultáneas? (sí/no)
+2. Si no alcanza, ¿cuántas conexiones faltan? (250 - 100)
+3. ¿Qué porcentaje del pedido (250) cubre el límite por defecto? (100 / 250 * 100, con dos decimales)
+[analista] herramientas: comparar_con_limite, calcular, calcular
+   resultado: --- ## Resultados del análisis ### 1. ¿El límite por defecto (100) alcanza para cubrir 250 conexiones? **No.** El valor de `max_connections = 100` **no supera** el requerimiento de 250 conexiones simultáneas. ### 2. ¿Cuántas conexiones faltan? **Faltan 150 conexiones.** > Cuenta: `250 - 100 = 150` #...
+
+[supervisor 3] → FINALIZAR
+   razón: Los tres criterios de la rúbrica se cumplen: (1) el investigador reportó el valor de max_connections=100 con fuente en advanced/resource-limits.md, (2) el analista realizó todas las cuentas pedidas (comparación, diferencia y porcentaje), y (3) las contribuciones son consistentes entre sí y responden completamente la pregunta.
+
+Respuesta final:
+## Respuesta
+
+**No alcanza.** El límite por defecto de `httpx.Client()` es **`max_connections = 100`** (fuente: `advanced/resource-limits.md`, sección "Resource limits").
+
+| Concepto | Valor |
+|---|---|
+| Conexiones requeridas | 250 |
+| Límite por defecto | 100 |
+| **Conexiones faltantes** | **150** (250 − 100) |
+| **Porcentaje cubierto** | **40,00%** (100 / 250 × 100) |
+
+El límite por defecto cubre menos de la mitad del requerimiento. Para soportar 250 conexiones simultáneas habría que instanciar el cliente con `httpx.Limits(max_connections=250)` o un valor superior.
+(38.94s)
+
+========================================================================
+  solo investigación: el supervisor no deriva al analista
+========================================================================
+
+Usuario: "¿Qué excepción lanza httpx cuando no consigue una conexión del pool a tiempo?"
+
+[supervisor 1] → investigador
+   razón: No hay ninguna contribución aún. La pregunta requiere un dato concreto de la documentación de httpx (qué excepción se lanza cuando no se obtiene una conexión del pool a tiempo), lo cual es tarea del investigador.
+   instrucción: Busca en la documentación oficial de httpx qué excepción se lanza cuando no se puede obtener una conexión del pool de conexiones a tiempo (timeout esperando una conexión disponible del pool). Indicá el nombre exacto de la excepción y el archivo o sección de la documentación donde aparece.
+[investigador] herramientas: buscar_documentacion, buscar_documentacion
+   resultado: La documentación es clara y consistente en ambas búsquedas. Aquí está el resultado: --- ## Excepción: `PoolTimeout` Cuando httpx **no puede obtener una conexión del pool de conexiones dentro del tiempo límite configurado**, lanza la excepción: ### `PoolTimeout` La documentación lo describe textualme...
+
+[supervisor 2] → FINALIZAR
+   razón: El investigador reportó el dato exacto requerido (excepción `PoolTimeout`) con su fuente (`advanced/timeouts.md`). No hay cuentas ni comparaciones que hacer. Los tres criterios de la rúbrica están cumplidos.
+
+Respuesta final:
+Cuando httpx no consigue una conexión del pool a tiempo, lanza **`PoolTimeout`**.
+
+Fuente: `advanced/timeouts.md`, sección *Fine tuning the configuration*.
+(18.78s)
+
+Traza guardada en trazas/ejecucion.json y trazas/ejecucion.log

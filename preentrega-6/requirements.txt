@@ -1,0 +1,7 @@
+langgraph>=1.2
+langchain-core>=1.4.7
+langchain-anthropic>=1.0
+langchain-google-genai>=4.4.0
+# Mismo rango que en la pre-entrega 4: Index.query se usa igual.
+pinecone>=8,<9
+python-dotenv>=1.0
