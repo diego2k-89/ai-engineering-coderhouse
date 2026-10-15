@@ -1,0 +1,86 @@
+
+========================================================================
+  multi-paso: buscar el cliente por nombre y después sus pedidos
+========================================================================
+
+[sesion-1] Usuario: "¿Cuántos pedidos tuvo Distribuidora Norte y cuál fue el total?"
+→ El agente decide usar: buscar_cliente(nombre='Distribuidora Norte')
+→ La herramienta devuelve: {"cliente_id": 102, "nombre": "Distribuidora Norte", "ciudad": "Salta"}
+→ El agente decide usar: buscar_pedidos(cliente_id=102)
+→ La herramienta devuelve: {"cliente_id": 102, "cantidad": 3, "total": 14500, "pedidos": [{"pedido_id": 5001, "cliente_id": 102, "fecha": "2026-07-03", "total": 4200, "estado": "entregado"}, {"pedido_id": 5007, "cliente_id": 102, "fecha": "2026-08-19", "total": 6300, "estado": "entregado"}, {"pedido_id": 5012, "cliente_id": 102, "fecha": "2026-09-30", "total": 4000, "estado": "en camino"}]}
+Respuesta: "**Distribuidora Norte** (Salta) tuvo **3 pedidos** por un total de **$14.500**.
+
+| Pedido | Fecha | Total | Estado |
+|--------|-------|-------|--------|
+| 5001 | 03/07/2026 | $4.200 | Entregado |
+| 5007 | 19/08/2026 | $6.300 | Entregado |
+| 5012 | 30/09/2026 | $4.000 | En camino |"
+(2 llamadas a herramientas, 6.22s)
+
+========================================================================
+  memoria: mismo thread_id, el agente sabe de qué cliente se habla
+========================================================================
+
+[sesion-1] Usuario: "¿Y el último?"
+Respuesta: "El último pedido es el **#5012**, del **30/09/2026**, por **$4.000**, y está actualmente **en camino**."
+(0 llamadas a herramientas, 1.85s)
+
+========================================================================
+  ciclo de retorno: el nombre tiene un error de tipeo y la herramienta sugiere el correcto
+========================================================================
+
+[sesion-2] Usuario: "¿Cuánto gastó en total Tecnosurr?"
+→ El agente razona: Voy a buscar el cliente primero.
+→ El agente decide usar: buscar_cliente(nombre='Tecnosurr')
+→ La herramienta devuelve: {"error": "no_encontrado", "buscado": "Tecnosurr", "sugerencias": ["TecnoSur SA"]}
+→ El agente razona: El nombre no existe exactamente, pero hay una sugerencia clara: **TecnoSur SA**. Voy a buscar con ese nombre.
+→ El agente decide usar: buscar_cliente(nombre='TecnoSur SA')
+→ La herramienta devuelve: {"cliente_id": 103, "nombre": "TecnoSur SA", "ciudad": "Bahía Blanca"}
+→ El agente decide usar: buscar_pedidos(cliente_id=103)
+→ La herramienta devuelve: {"cliente_id": 103, "cantidad": 2, "total": 26250, "pedidos": [{"pedido_id": 5003, "cliente_id": 103, "fecha": "2026-07-21", "total": 18900, "estado": "entregado"}, {"pedido_id": 5010, "cliente_id": 103, "fecha": "2026-09-02", "total": 7350, "estado": "cancelado"}]}
+Respuesta: "**TecnoSur SA** (Bahía Blanca) gastó un total de **$26.250** en 2 pedidos:
+
+| Pedido | Fecha | Total | Estado |
+|--------|-------|-------|--------|
+| 5003 | 21/07/2026 | $18.900 | Entregado |
+| 5010 | 02/09/2026 | $7.350 | Cancelado |
+
+> Nota: el total incluye el pedido cancelado. Si querés solo los pedidos efectivos, el monto sería **$18.900**."
+(3 llamadas a herramientas, 8.70s)
+
+========================================================================
+  aclaración: hay dos clientes Acme y el agente pregunta cuál
+========================================================================
+
+[sesion-2] Usuario: "¿Cuáles son los pedidos de Acme?"
+→ El agente decide usar: buscar_cliente(nombre='Acme')
+→ La herramienta devuelve: {"error": "ambiguo", "coincidencias": [{"cliente_id": 101, "nombre": "Acme SRL", "ciudad": "Córdoba"}, {"cliente_id": 104, "nombre": "Acme Logística", "ciudad": "Rosario"}]}
+Respuesta: "Encontré dos clientes que coinciden con "Acme". ¿A cuál te referís?
+
+1. **Acme SRL** (Córdoba)
+2. **Acme Logística** (Rosario)"
+(1 llamadas a herramientas, 3.27s)
+
+========================================================================
+  memoria: resuelve la aclaración con el contexto anterior
+========================================================================
+
+[sesion-2] Usuario: "El de Rosario."
+→ El agente decide usar: buscar_pedidos(cliente_id=104)
+→ La herramienta devuelve: {"cliente_id": 104, "cantidad": 1, "total": 9800, "pedidos": [{"pedido_id": 5011, "cliente_id": 104, "fecha": "2026-09-15", "total": 9800, "estado": "entregado"}]}
+Respuesta: "**Acme Logística** (Rosario) tiene 1 pedido:
+
+| Pedido | Fecha | Total | Estado |
+|--------|-------|-------|--------|
+| 5011 | 15/09/2026 | $9.800 | Entregado |"
+(1 llamadas a herramientas, 4.13s)
+
+========================================================================
+  aislamiento: thread nuevo, el agente no tiene contexto y lo pide
+========================================================================
+
+[sesion-3] Usuario: "¿Y el último?"
+Respuesta: "No tengo contexto previo sobre qué cliente o pedido estás consultando. ¿Podés decirme el nombre del cliente o el cliente_id para buscar su último pedido?"
+(0 llamadas a herramientas, 1.89s)
+
+Traza guardada en traza_react.json y traza_react.log

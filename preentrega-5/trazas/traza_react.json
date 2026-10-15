@@ -1,0 +1,266 @@
+[
+  {
+    "demuestra": "multi-paso: buscar el cliente por nombre y después sus pedidos",
+    "thread_id": "sesion-1",
+    "pregunta": "¿Cuántos pedidos tuvo Distribuidora Norte y cuál fue el total?",
+    "pasos": [
+      {
+        "tipo": "llamada",
+        "herramienta": "buscar_cliente",
+        "argumentos": {
+          "nombre": "Distribuidora Norte"
+        }
+      },
+      {
+        "tipo": "resultado",
+        "herramienta": "buscar_cliente",
+        "resultado": {
+          "cliente_id": 102,
+          "nombre": "Distribuidora Norte",
+          "ciudad": "Salta"
+        }
+      },
+      {
+        "tipo": "llamada",
+        "herramienta": "buscar_pedidos",
+        "argumentos": {
+          "cliente_id": 102
+        }
+      },
+      {
+        "tipo": "resultado",
+        "herramienta": "buscar_pedidos",
+        "resultado": {
+          "cliente_id": 102,
+          "cantidad": 3,
+          "total": 14500,
+          "pedidos": [
+            {
+              "pedido_id": 5001,
+              "cliente_id": 102,
+              "fecha": "2026-07-03",
+              "total": 4200,
+              "estado": "entregado"
+            },
+            {
+              "pedido_id": 5007,
+              "cliente_id": 102,
+              "fecha": "2026-08-19",
+              "total": 6300,
+              "estado": "entregado"
+            },
+            {
+              "pedido_id": 5012,
+              "cliente_id": 102,
+              "fecha": "2026-09-30",
+              "total": 4000,
+              "estado": "en camino"
+            }
+          ]
+        }
+      },
+      {
+        "tipo": "respuesta",
+        "texto": "**Distribuidora Norte** (Salta) tuvo **3 pedidos** por un total de **$14.500**.\n\n| Pedido | Fecha | Total | Estado |\n|--------|-------|-------|--------|\n| 5001 | 03/07/2026 | $4.200 | Entregado |\n| 5007 | 19/08/2026 | $6.300 | Entregado |\n| 5012 | 30/09/2026 | $4.000 | En camino |"
+      }
+    ],
+    "respuesta": "**Distribuidora Norte** (Salta) tuvo **3 pedidos** por un total de **$14.500**.\n\n| Pedido | Fecha | Total | Estado |\n|--------|-------|-------|--------|\n| 5001 | 03/07/2026 | $4.200 | Entregado |\n| 5007 | 19/08/2026 | $6.300 | Entregado |\n| 5012 | 30/09/2026 | $4.000 | En camino |",
+    "llamadas_herramientas": 2,
+    "segundos": 6.22
+  },
+  {
+    "demuestra": "memoria: mismo thread_id, el agente sabe de qué cliente se habla",
+    "thread_id": "sesion-1",
+    "pregunta": "¿Y el último?",
+    "pasos": [
+      {
+        "tipo": "respuesta",
+        "texto": "El último pedido es el **#5012**, del **30/09/2026**, por **$4.000**, y está actualmente **en camino**."
+      }
+    ],
+    "respuesta": "El último pedido es el **#5012**, del **30/09/2026**, por **$4.000**, y está actualmente **en camino**.",
+    "llamadas_herramientas": 0,
+    "segundos": 1.85
+  },
+  {
+    "demuestra": "ciclo de retorno: el nombre tiene un error de tipeo y la herramienta sugiere el correcto",
+    "thread_id": "sesion-2",
+    "pregunta": "¿Cuánto gastó en total Tecnosurr?",
+    "pasos": [
+      {
+        "tipo": "razonamiento",
+        "texto": "Voy a buscar el cliente primero."
+      },
+      {
+        "tipo": "llamada",
+        "herramienta": "buscar_cliente",
+        "argumentos": {
+          "nombre": "Tecnosurr"
+        }
+      },
+      {
+        "tipo": "resultado",
+        "herramienta": "buscar_cliente",
+        "resultado": {
+          "error": "no_encontrado",
+          "buscado": "Tecnosurr",
+          "sugerencias": [
+            "TecnoSur SA"
+          ]
+        }
+      },
+      {
+        "tipo": "razonamiento",
+        "texto": "El nombre no existe exactamente, pero hay una sugerencia clara: **TecnoSur SA**. Voy a buscar con ese nombre."
+      },
+      {
+        "tipo": "llamada",
+        "herramienta": "buscar_cliente",
+        "argumentos": {
+          "nombre": "TecnoSur SA"
+        }
+      },
+      {
+        "tipo": "resultado",
+        "herramienta": "buscar_cliente",
+        "resultado": {
+          "cliente_id": 103,
+          "nombre": "TecnoSur SA",
+          "ciudad": "Bahía Blanca"
+        }
+      },
+      {
+        "tipo": "llamada",
+        "herramienta": "buscar_pedidos",
+        "argumentos": {
+          "cliente_id": 103
+        }
+      },
+      {
+        "tipo": "resultado",
+        "herramienta": "buscar_pedidos",
+        "resultado": {
+          "cliente_id": 103,
+          "cantidad": 2,
+          "total": 26250,
+          "pedidos": [
+            {
+              "pedido_id": 5003,
+              "cliente_id": 103,
+              "fecha": "2026-07-21",
+              "total": 18900,
+              "estado": "entregado"
+            },
+            {
+              "pedido_id": 5010,
+              "cliente_id": 103,
+              "fecha": "2026-09-02",
+              "total": 7350,
+              "estado": "cancelado"
+            }
+          ]
+        }
+      },
+      {
+        "tipo": "respuesta",
+        "texto": "**TecnoSur SA** (Bahía Blanca) gastó un total de **$26.250** en 2 pedidos:\n\n| Pedido | Fecha | Total | Estado |\n|--------|-------|-------|--------|\n| 5003 | 21/07/2026 | $18.900 | Entregado |\n| 5010 | 02/09/2026 | $7.350 | Cancelado |\n\n> Nota: el total incluye el pedido cancelado. Si querés solo los pedidos efectivos, el monto sería **$18.900**."
+      }
+    ],
+    "respuesta": "**TecnoSur SA** (Bahía Blanca) gastó un total de **$26.250** en 2 pedidos:\n\n| Pedido | Fecha | Total | Estado |\n|--------|-------|-------|--------|\n| 5003 | 21/07/2026 | $18.900 | Entregado |\n| 5010 | 02/09/2026 | $7.350 | Cancelado |\n\n> Nota: el total incluye el pedido cancelado. Si querés solo los pedidos efectivos, el monto sería **$18.900**.",
+    "llamadas_herramientas": 3,
+    "segundos": 8.7
+  },
+  {
+    "demuestra": "aclaración: hay dos clientes Acme y el agente pregunta cuál",
+    "thread_id": "sesion-2",
+    "pregunta": "¿Cuáles son los pedidos de Acme?",
+    "pasos": [
+      {
+        "tipo": "llamada",
+        "herramienta": "buscar_cliente",
+        "argumentos": {
+          "nombre": "Acme"
+        }
+      },
+      {
+        "tipo": "resultado",
+        "herramienta": "buscar_cliente",
+        "resultado": {
+          "error": "ambiguo",
+          "coincidencias": [
+            {
+              "cliente_id": 101,
+              "nombre": "Acme SRL",
+              "ciudad": "Córdoba"
+            },
+            {
+              "cliente_id": 104,
+              "nombre": "Acme Logística",
+              "ciudad": "Rosario"
+            }
+          ]
+        }
+      },
+      {
+        "tipo": "respuesta",
+        "texto": "Encontré dos clientes que coinciden con \"Acme\". ¿A cuál te referís?\n\n1. **Acme SRL** (Córdoba)\n2. **Acme Logística** (Rosario)"
+      }
+    ],
+    "respuesta": "Encontré dos clientes que coinciden con \"Acme\". ¿A cuál te referís?\n\n1. **Acme SRL** (Córdoba)\n2. **Acme Logística** (Rosario)",
+    "llamadas_herramientas": 1,
+    "segundos": 3.27
+  },
+  {
+    "demuestra": "memoria: resuelve la aclaración con el contexto anterior",
+    "thread_id": "sesion-2",
+    "pregunta": "El de Rosario.",
+    "pasos": [
+      {
+        "tipo": "llamada",
+        "herramienta": "buscar_pedidos",
+        "argumentos": {
+          "cliente_id": 104
+        }
+      },
+      {
+        "tipo": "resultado",
+        "herramienta": "buscar_pedidos",
+        "resultado": {
+          "cliente_id": 104,
+          "cantidad": 1,
+          "total": 9800,
+          "pedidos": [
+            {
+              "pedido_id": 5011,
+              "cliente_id": 104,
+              "fecha": "2026-09-15",
+              "total": 9800,
+              "estado": "entregado"
+            }
+          ]
+        }
+      },
+      {
+        "tipo": "respuesta",
+        "texto": "**Acme Logística** (Rosario) tiene 1 pedido:\n\n| Pedido | Fecha | Total | Estado |\n|--------|-------|-------|--------|\n| 5011 | 15/09/2026 | $9.800 | Entregado |"
+      }
+    ],
+    "respuesta": "**Acme Logística** (Rosario) tiene 1 pedido:\n\n| Pedido | Fecha | Total | Estado |\n|--------|-------|-------|--------|\n| 5011 | 15/09/2026 | $9.800 | Entregado |",
+    "llamadas_herramientas": 1,
+    "segundos": 4.13
+  },
+  {
+    "demuestra": "aislamiento: thread nuevo, el agente no tiene contexto y lo pide",
+    "thread_id": "sesion-3",
+    "pregunta": "¿Y el último?",
+    "pasos": [
+      {
+        "tipo": "respuesta",
+        "texto": "No tengo contexto previo sobre qué cliente o pedido estás consultando. ¿Podés decirme el nombre del cliente o el cliente_id para buscar su último pedido?"
+      }
+    ],
+    "respuesta": "No tengo contexto previo sobre qué cliente o pedido estás consultando. ¿Podés decirme el nombre del cliente o el cliente_id para buscar su último pedido?",
+    "llamadas_herramientas": 0,
+    "segundos": 1.89
+  }
+]
