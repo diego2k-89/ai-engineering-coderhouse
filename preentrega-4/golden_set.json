@@ -1,0 +1,27 @@
+[
+  {
+    "pregunta": "¿Para qué sirve el parámetro trust_env?",
+    "documento_id_esperado": "environment_variables.md",
+    "tipo": "lexica"
+  },
+  {
+    "pregunta": "¿Cómo uso MockTransport para probar un cliente sin hacer requests reales?",
+    "documento_id_esperado": "advanced/transports.md",
+    "tipo": "lexica"
+  },
+  {
+    "pregunta": "¿Cómo limito la cantidad máxima de conexiones que el cliente puede tener abiertas al mismo tiempo?",
+    "documento_id_esperado": "advanced/resource-limits.md",
+    "tipo": "semantica"
+  },
+  {
+    "pregunta": "Al usar un proxy, mis requests HTTPS fallan porque se agota el tiempo de la negociación TLS. ¿Cómo lo soluciono?",
+    "documento_id_esperado": "troubleshooting.md",
+    "tipo": "semantica"
+  },
+  {
+    "pregunta": "¿Cómo hago para que se ejecute una función mía justo antes de que cada request salga a la red?",
+    "documento_id_esperado": "advanced/event-hooks.md",
+    "tipo": "semantica"
+  }
+]
