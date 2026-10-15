@@ -1,0 +1,19 @@
+# --- LangChain ---
+langchain-core>=1.6.0
+langchain-text-splitters>=1.1.0
+langchain-google-genai>=4.4.0
+langchain-community>=0.4.0      # BM25Retriever
+langchain-classic>=1.0.0        # EnsembleRetriever
+
+# --- Pinecone ---
+# Fijado en la v8. La v9 y la v10 reemplazaron la API que usan la clase y la
+# pista (create_index con ServerlessSpec, Index.upsert, Index.query).
+# langchain-pinecone no se usa: su última versión no soporta Python 3.14.
+pinecone>=8,<9
+
+# --- Búsqueda léxica y tokenización ---
+rank_bm25>=0.2.2
+tiktoken>=0.14.0
+
+# --- Configuración ---
+python-dotenv>=1.0.1
