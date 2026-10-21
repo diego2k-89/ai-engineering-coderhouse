@@ -15,7 +15,7 @@ Cada pre-entrega vive en su propia carpeta y construye sobre la anterior.
 | 4 | Escalabilidad documental: RAG avanzado y Pinecone | [`preentrega-4/`](./preentrega-4) — RAG escalable en la nube | ✅ Entregado |
 | 5 | Razonamiento autónomo: agentes con LangGraph | [`preentrega-5/`](./preentrega-5) — Agente cíclico con memoria persistente | ✅ Entregado |
 | 6 | Sistemas multi-agente: patrón Supervisor y estado compartido | [`preentrega-6/`](./preentrega-6) — Orquestador multi-agente | ✅ Entregado |
-| 7 | Producción: observabilidad, FastAPI y human-in-the-loop | `preentrega-7/` — API de producción y monitoreo | 🚧 En progreso |
+| 7 | Producción: observabilidad, FastAPI y human-in-the-loop | [`preentrega-7/`](./preentrega-7) — API de producción y monitoreo | ✅ Entregado |
 
 ---
 

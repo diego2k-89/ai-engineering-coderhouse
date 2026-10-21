@@ -1,0 +1,35 @@
+[
+  {
+    "paso": "iniciar",
+    "job_id": "63b9bd6a-28e4-47c1-8e76-119b86fefbba",
+    "estado": "WAITING_APPROVAL",
+    "pregunta": "Necesito dos datos de httpx, buscalos por separado: el timeout por defecto y la cantidad máxima de conexiones keep-alive por defecto. Después calculá cuántos segundos suman 3 intentos que agoten ese timeout y cuántas conexiones keep-alive faltan para llegar a 50.",
+    "respuesta": null,
+    "aprobacion": {
+      "motivo": "La tarea ya hizo 2 derivaciones a especialistas (presupuesto: 2) y el supervisor quiere una más.",
+      "siguiente_agente": "analista",
+      "instruccion": "Con los siguientes datos reportados por el investigador:\n- Timeout por defecto de httpx: 5 segundos\n- Máximo de conexiones keep-alive por defecto (max_keepalive_connections): 20\n\nRealizá estos dos cálculos:\n1. ¿Cuántos segundos suman 3 intentos que agotan el timeout? (3 × 5)\n2. ¿Cuántas conexiones keep-alive faltan para llegar a 50? (50 − 20)"
+    },
+    "error": null,
+    "creado": 1792549691.8384302,
+    "actualizado": 1792549731.8905115,
+    "segundos": 40.05
+  },
+  {
+    "paso": "aprobar",
+    "job_id": "63b9bd6a-28e4-47c1-8e76-119b86fefbba",
+    "estado": "DONE",
+    "pregunta": "Necesito dos datos de httpx, buscalos por separado: el timeout por defecto y la cantidad máxima de conexiones keep-alive por defecto. Después calculá cuántos segundos suman 3 intentos que agoten ese timeout y cuántas conexiones keep-alive faltan para llegar a 50.",
+    "respuesta": "## Datos de httpx y cálculos\n\n### Valores por defecto\n\n| Parámetro | Valor | Fuente |\n|---|---|---|\n| Timeout por defecto | **5 segundos** | `advanced/timeouts.md` y `quickstart.md` |\n| `max_keepalive_connections` | **20** | `advanced/resource-limits.md` |\n\n### Cálculos\n\n1. **3 intentos que agotan el timeout:** 3 × 5 = **15 segundos** en total.\n2. **Conexiones keep-alive faltantes para llegar a 50:** 50 − 20 = **30 conexiones** adicionales (se configura con `httpx.Limits(max_keepalive_connections=50)`).",
+    "aprobacion": null,
+    "error": null,
+    "creado": 1792549691.8384302,
+    "actualizado": 1792549982.4948905,
+    "segundos": 15.48,
+    "agentes": [
+      "investigador",
+      "investigador",
+      "analista"
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+# Redis 8 para la API. Trae RedisJSON y RediSearch, que necesita el checkpointer
+# de LangGraph (langgraph-checkpoint-redis).
+#
+#   docker compose up -d
+#
+# La API corre afuera, con uvicorn, para ver los logs y reiniciarla fácil.
+services:
+  redis:
+    image: redis:8
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-datos:/data
+
+volumes:
+  redis-datos:
