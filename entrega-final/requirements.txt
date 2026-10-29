@@ -1,0 +1,32 @@
+# Python 3.12 o más nuevo. La imagen de Docker usa python:3.12-slim.
+
+# --- API ---
+fastapi>=0.115
+uvicorn>=0.30
+httpx>=0.28                      # scripts de pruebas y demo
+
+# --- Redis: registro de jobs, cola y checkpoints de LangGraph ---
+redis>=5.0
+langgraph-checkpoint-redis>=0.5  # necesita Redis 8, o Redis Stack (RedisJSON + RediSearch)
+
+# --- Agentes ---
+langgraph>=1.2
+langchain-core>=1.4.7
+langchain-anthropic>=1.0
+
+# --- RAG híbrido (pre-entrega 4, ahora async) ---
+langchain-google-genai>=4.4.0    # embeddings: aembed_query / aembed_documents
+pinecone[asyncio]>=8,<9          # PineconeAsyncio e IndexAsyncio (trae aiohttp)
+langchain-classic>=1.0           # EnsembleRetriever (fusión RRF)
+langchain-community>=0.4         # BM25Retriever
+rank_bm25>=0.2.2
+langchain-text-splitters>=1.0
+tiktoken>=0.8
+
+# --- Configuración y observabilidad ---
+python-dotenv>=1.0
+langsmith>=0.3
+
+# --- Tests ---
+pytest>=8
+fakeredis>=2.20

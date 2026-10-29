@@ -1,0 +1,47 @@
+# El sistema completo con un comando:
+#
+#   docker compose up --build
+#
+# Tres servicios, en este orden:
+#   1. redis    Redis 8: registro de jobs, cola y checkpoints de LangGraph. Trae
+#               RedisJSON y RediSearch, que necesita langgraph-checkpoint-redis.
+#   2. ingesta  Sube la documentación a Pinecone si el índice está vacío y
+#               termina. Si ya está cargado, no hace nada.
+#   3. api      FastAPI + el worker, en http://localhost:8000 (docs en /docs).
+#
+# Las keys salen del .env (copiar .env.example). Ninguna está en este archivo.
+
+services:
+  redis:
+    image: redis:8
+    volumes:
+      - redis-datos:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+  ingesta:
+    build: .
+    command: ["python", "-m", "app.rag.ingesta"]
+    env_file: .env
+    restart: "no"
+
+  api:
+    build: .
+    env_file: .env
+    environment:
+      # Dentro de la red de Docker, Redis se llama como su servicio.
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "8000:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+      ingesta:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+volumes:
+  redis-datos:

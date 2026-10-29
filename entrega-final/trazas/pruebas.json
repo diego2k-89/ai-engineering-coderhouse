@@ -1,0 +1,90 @@
+{
+  "resumen": {
+    "pruebas": 5,
+    "pasaron": 5,
+    "tiempo_total_pared_s": 28.43,
+    "post_max_ms": 43,
+    "latencia_p50_s": 27.4,
+    "latencia_p95_s": 28.43
+  },
+  "resultados": [
+    {
+      "prueba": "limite_de_conexiones",
+      "job_id": "076ad5be-b26b-40c9-9195-a608158452db",
+      "pregunta": "Un servicio necesita 250 conexiones simultáneas con un httpx.Client creado sin parámetros. ¿Alcanza el límite por defecto? Si no, ¿cuántas faltan?",
+      "esperado": "150",
+      "paso": true,
+      "estado": "DONE",
+      "segundos_post": 0.043,
+      "segundos_total": 28.43,
+      "agentes": [
+        "investigador",
+        "analista"
+      ],
+      "respuesta": "## Respuesta\n\nEl límite por defecto **no alcanza**.\n\nSegún `advanced/resource-limits.md` (sección *\"Resource limits\"*), cuando se crea un `httpx.Client()` sin parámetros, el valor de `max_connections` en `httpx.Limits` es **100 conexiones simultáneas**.\n\nEl servicio requiere **250 conexiones**, por lo que:\n\n| Concepto | Valor |\n|---|---|\n| Conexiones necesarias | 250 |\n| Límite por defecto (`max_connections`) | 100 |\n| **Conexiones faltantes** | **150** |\n\nPara cubrir la demanda habría que configurar explícitamente el pool, por ejemplo:\n\n```python\nlimits = httpx.Limits(max_connections=250)\nclient = httpx.Client(limits=limits)\n```",
+      "error": null
+    },
+    {
+      "prueba": "excepcion_del_pool",
+      "job_id": "434680f9-495f-4acf-9ba6-287273f1d21f",
+      "pregunta": "¿Qué excepción lanza httpx cuando no consigue una conexión del pool a tiempo?",
+      "esperado": "PoolTimeout",
+      "paso": true,
+      "estado": "DONE",
+      "segundos_post": 0.023,
+      "segundos_total": 21.33,
+      "agentes": [
+        "investigador"
+      ],
+      "respuesta": "## Respuesta\n\nCuando httpx no consigue obtener una conexión del pool a tiempo, lanza la excepción **`httpx.PoolTimeout`**.\n\nSu lugar en la jerarquía de excepciones es:\n\n```\nhttpx.HTTPError\n  └── RequestError\n        └── TransportError\n              └── TimeoutException\n                    └── PoolTimeout\n```\n\nEsta excepción se dispara cuando httpx no logra adquirir una conexión disponible dentro del tiempo máximo configurado para el pool.\n\n**Fuentes:** `advanced/timeouts.md` (comportamiento y condición de disparo) y `exceptions.md` (jerarquía de excepciones).",
+      "error": null
+    },
+    {
+      "prueba": "timeout_por_reintentos",
+      "job_id": "7c1f4ecd-017f-4ec4-9806-c3e163869dc6",
+      "pregunta": "¿Cuál es el timeout por defecto de httpx y cuántos segundos suman 3 intentos que agoten ese timeout?",
+      "esperado": "15",
+      "paso": true,
+      "estado": "DONE",
+      "segundos_post": 0.023,
+      "segundos_total": 27.4,
+      "agentes": [
+        "investigador",
+        "analista"
+      ],
+      "respuesta": "## Timeout por defecto de httpx\n\nEl timeout por defecto de httpx es **5 segundos**, aplicable a los cuatro tipos de timeout (connect, read, write y pool). Este dato aparece documentado en:\n\n- **`advanced/timeouts.md`**: *\"The default behavior is to raise a `TimeoutException` after **5 seconds** of network inactivity.\"*\n- **`quickstart.md`**: *\"The default timeout for network inactivity is **five seconds**.\"*\n\n## Cálculo: 3 intentos agotando el timeout\n\n**3 intentos × 5 segundos = 15 segundos** (cálculo realizado por el analista).",
+      "error": null
+    },
+    {
+      "prueba": "porcentaje_keepalive",
+      "job_id": "9a2d17f3-71f3-4971-bb68-03e2c8aec346",
+      "pregunta": "¿Cuántas conexiones keep-alive mantiene httpx por defecto? ¿Qué porcentaje de 50 representan?",
+      "esperado": "40",
+      "paso": true,
+      "estado": "DONE",
+      "segundos_post": 0.023,
+      "segundos_total": 28.41,
+      "agentes": [
+        "investigador",
+        "analista"
+      ],
+      "respuesta": "## Respuesta\n\nPor defecto, httpx mantiene **20 conexiones keep-alive**, controladas por el parámetro `max_keepalive_connections` de `httpx.Limits`.\n\n**Fuente:** `advanced/resource-limits.md`, sección \"Resource limits\".\n\n---\n\nSobre 50, ese valor representa:\n\n> 20 / 50 × 100 = **40%**",
+      "error": null
+    },
+    {
+      "prueba": "variable_de_entorno_ssl",
+      "job_id": "1aa237f6-ccea-4dcb-9ae5-6caef6ee72d3",
+      "pregunta": "¿Qué variable de entorno usa httpx para indicar un archivo de certificados SSL?",
+      "esperado": "SSL_CERT_FILE",
+      "paso": true,
+      "estado": "DONE",
+      "segundos_post": 0.023,
+      "segundos_total": 19.28,
+      "agentes": [
+        "investigador"
+      ],
+      "respuesta": "La variable de entorno que usa httpx para indicar un archivo de certificados SSL es **`SSL_CERT_FILE`**.\n\nCuando está definida, httpx carga el CA bundle desde la ruta especificada en lugar de la ubicación por defecto. Dato obtenido de `environment_variables.md` (confirmado también en `advanced/ssl.md`).\n\n**Ejemplo:**\n```console\nSSL_CERT_FILE=/path/to/ca-bundle.crt python -c \"import httpx; httpx.get('https://example.com')\"\n```",
+      "error": null
+    }
+  ]
+}

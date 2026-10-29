@@ -1,0 +1,52 @@
+[
+  {
+    "paso": "iniciar",
+    "job_id": "286d7d44-ea55-4446-891b-85d8549d7685",
+    "estado": "DONE",
+    "pregunta": "Necesito dos datos de httpx, buscalos por separado: el timeout por defecto y la cantidad máxima de conexiones keep-alive por defecto. Después calculá cuántos segundos suman 3 intentos que agoten ese timeout y cuántas conexiones keep-alive faltan para llegar a 50.",
+    "respuesta": "## Datos de httpx y cálculos\n\n**Timeout por defecto: 5 segundos**\nFuente: `advanced/timeouts.md`, sección *Timeouts*\n\n**`max_keepalive_connections` por defecto: 20**\nFuente: `advanced/resource-limits.md`, sección *Resource limits*\n\n---\n\n**Cálculos:**\n\n| Pregunta | Operación | Resultado |\n|---|---|---|\n| 3 intentos agotando el timeout | 3 × 5 s | **15 segundos** |\n| Conexiones keep-alive faltantes para llegar a 50 | 50 − 20 | **30 conexiones** |",
+    "agentes": [
+      "investigador",
+      "analista"
+    ],
+    "aprobacion": null,
+    "error": null,
+    "segundos": 27.26,
+    "creado": 1793244685.8599005,
+    "actualizado": 1793244713.1287444
+  },
+  {
+    "paso": "iniciar",
+    "job_id": "5e2d0c2a-45a2-4ffe-bed7-e44ca50cff43",
+    "estado": "WAITING_APPROVAL",
+    "pregunta": "Necesito dos datos de httpx, buscalos por separado: el timeout por defecto y la cantidad máxima de conexiones keep-alive por defecto. Después calculá cuántos segundos suman 3 intentos que agoten ese timeout y cuántas conexiones keep-alive faltan para llegar a 50.",
+    "respuesta": null,
+    "agentes": [],
+    "aprobacion": {
+      "motivo": "La tarea ya hizo 2 derivaciones a especialistas (presupuesto: 2) y el supervisor quiere una más.",
+      "siguiente_agente": "analista",
+      "instruccion": "Con los siguientes datos reportados por el investigador, realizá dos cálculos:\n1. Timeout por defecto de httpx: 5 segundos. Calculá cuántos segundos suman 3 intentos que agoten ese timeout (3 × 5).\n2. Máximo de conexiones keep-alive por defecto en httpx: 20. Calculá cuántas conexiones keep-alive faltan para llegar a 50 (50 − 20).\nMostrá ambos resultados con claridad."
+    },
+    "error": null,
+    "segundos": 26.65,
+    "creado": 1793244960.7003798,
+    "actualizado": 1793244987.3522303
+  },
+  {
+    "paso": "aprobar",
+    "job_id": "5e2d0c2a-45a2-4ffe-bed7-e44ca50cff43",
+    "estado": "DONE",
+    "pregunta": "Necesito dos datos de httpx, buscalos por separado: el timeout por defecto y la cantidad máxima de conexiones keep-alive por defecto. Después calculá cuántos segundos suman 3 intentos que agoten ese timeout y cuántas conexiones keep-alive faltan para llegar a 50.",
+    "respuesta": "## Datos de httpx y cálculos\n\n**Timeout por defecto: 5 segundos**\nFuente: `advanced/timeouts.md` y `quickstart.md`\n\n**Max keep-alive connections por defecto: 20**\nFuente: `advanced/resource-limits.md`\n\n---\n\n**Cálculos (realizados por el analista):**\n\n| Operación | Resultado |\n|---|---|\n| 3 intentos agotando el timeout → 3 × 5 s | **15 segundos** |\n| Conexiones keep-alive faltantes para llegar a 50 → 50 − 20 | **30 conexiones** |",
+    "agentes": [
+      "investigador",
+      "investigador",
+      "analista"
+    ],
+    "aprobacion": null,
+    "error": null,
+    "segundos": 11.81,
+    "creado": 1793244960.7003798,
+    "actualizado": 1793245548.8990104
+  }
+]

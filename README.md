@@ -16,6 +16,7 @@ Cada pre-entrega vive en su propia carpeta y construye sobre la anterior.
 | 5 | Razonamiento autónomo: agentes con LangGraph | [`preentrega-5/`](./preentrega-5) — Agente cíclico con memoria persistente | ✅ Entregado |
 | 6 | Sistemas multi-agente: patrón Supervisor y estado compartido | [`preentrega-6/`](./preentrega-6) — Orquestador multi-agente | ✅ Entregado |
 | 7 | Producción: observabilidad, FastAPI y human-in-the-loop | [`preentrega-7/`](./preentrega-7) — API de producción y monitoreo | ✅ Entregado |
+| 8 | Proyecto final: sistema de grado de producción | [`entrega-final/`](./entrega-final) — RAG híbrido + agentes con supervisor + API async + trazas | 🚧 En entrega |
 
 ---
 
@@ -28,6 +29,14 @@ python -m venv .venv
 .venv\Scripts\activate                              # Windows
 pip install -r preentrega-1/requirements.txt       # o la entrega que vayas a correr
 copy preentrega-1\.env.example preentrega-1\.env    # y completar las keys
+```
+
+La entrega final se levanta entera con Docker:
+
+```bash
+cd entrega-final
+copy .env.example .env                              # y completar las keys
+docker compose up --build
 ```
 
 Las instrucciones detalladas de cada entrega están en el README de su carpeta.
